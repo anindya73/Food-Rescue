@@ -1,0 +1,40 @@
+<% var bodyHtml = `
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Item</th>
+          <th>Qty (kg/units)</th>
+          <th>Center</th>
+          <th>Pickup Date</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        `; pickups.forEach(p => { const pickupDateStr = p.pickup_date ?
+        (p.pickup_date instanceof Date ? p.pickup_date : new
+        Date(p.pickup_date)).toISOString().substring(0,10) : '-'; const
+        statusBadge = p.delivered ? 'bg-success' : 'bg-warning text-dark'; const
+        statusText = p.delivered ? 'Delivered' : 'Pending'; const actionBtn =
+        !p.delivered ? `
+        <form method="POST" action="/volunteer/deliver/${p.id}">
+          <button class="btn btn-sm btn-success">Mark Delivered</button>
+        </form>
+        ` : ''; bodyHtml += `
+        <tr>
+          <td>${p.food_item}</td>
+          <td>${p.quantity}</td>
+          <td>${p.center_name}</td>
+          <td>${pickupDateStr}</td>
+          <td><span class="badge ${statusBadge}">${statusText}</span></td>
+          <td>${actionBtn}</td>
+        </tr>
+        `; }); bodyHtml += `
+      </tbody>
+    </table>
+  </div>
+</div>
+`; %> <%- include('../layout', { title: 'Volunteer Dashboard', body: bodyHtml })
+%>

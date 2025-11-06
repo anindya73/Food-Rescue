@@ -1,0 +1,24 @@
+<nav id="sidebar-wrapper" class="bg-success text-white vh-100 p-3">
+  <div class="text-center mb-4">
+    <h4 class="fw-bold"><i class="bi bi-bag-heart"></i> FoodRescue</h4>
+    <% if (user) { %><div class="small opacity-75"><i class="bi bi-person-circle"></i> <%= user.name %> • <%= user.role %></div><% } %>
+  </div>
+  <ul class="nav flex-column gap-1">
+    <% if (user && user.role==='admin') { %>
+      <li><a href="/admin" class="nav-link text-white"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
+      <li><a href="/admin/centers" class="nav-link text-white"><i class="bi bi-geo-alt me-2"></i>Manage Centers</a></li>
+      <li><a href="/admin/assign" class="nav-link text-white"><i class="bi bi-clipboard-check me-2"></i>Assign Pickup</a></li>
+      <li><a href="/admin/reports" class="nav-link text-white"><i class="bi bi-graph-up me-2"></i>Reports</a></li>
+    <% } %>
+    <% if (user && user.role==='donor') { %>
+      <li><a href="/donor" class="nav-link text-white"><i class="bi bi-gift me-2"></i>My Donations</a></li>
+      <li><a href="/donor/donate" class="nav-link text-white"><i class="bi bi-plus-circle me-2"></i>Add Donation</a></li>
+    <% } %>
+    <% if (user && user.role==='volunteer') { %>
+      <li><a href="/volunteer" class="nav-link text-white"><i class="bi bi-truck me-2"></i>Deliveries</a></li>
+    <% } %>
+    <% if (user && user.role==='receiver') { %>
+      <li><a href="/receiver" class="nav-link text-white"><i class="bi bi-box-seam me-2"></i>Available Food</a></li>
+    <% } %>
+  </ul>
+</nav>

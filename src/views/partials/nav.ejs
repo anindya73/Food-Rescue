@@ -1,0 +1,14 @@
+<nav class="navbar navbar-light bg-white shadow-sm px-4">
+  <div class="d-flex justify-content-between w-100 align-items-center">
+    <h5 class="mb-0 text-success fw-semibold"><%= title || 'Dashboard' %></h5>
+    <div>
+      <% if (!user) { %>
+        <a href="/login" class="btn btn-success btn-sm">Login</a>
+      <% } else { %>
+        <form action="/logout" method="POST" class="mb-0">
+          <button class="btn btn-outline-success btn-sm"><i class="bi bi-box-arrow-right"></i> Logout</button>
+        </form>
+      <% } %>
+    </div>
+  </div>
+</nav>

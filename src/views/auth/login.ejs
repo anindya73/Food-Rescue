@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html><head><%- include('../partials/head') %></head>
+<body class="auth-bg">
+  <div class="auth-card card shadow-sm">
+    <div class="card-body">
+      <h3 class="text-success mb-3">Login</h3>
+      <!-- Debug: <%= JSON.stringify({error, success}) %> -->
+      <% if (error && error.length > 0) { %>
+        <div class="alert alert-danger"><%= error[0] %></div>
+      <% } %>
+      <% if (success && success.length > 0) { %>
+        <div class="alert alert-success"><%= success[0] %></div>
+      <% } %>
+      <form method="POST" action="/login">
+        <div class="mb-3"><label class="form-label">Email</label><input type="email" name="email" class="form-control" required></div>
+        <div class="mb-3"><label class="form-label">Password</label><input type="password" name="password" class="form-control" required></div>
+        <button class="btn btn-success w-100">Login</button>
+      </form>
+      <div class="small mt-3 text-center">No account? <a class="text-success" href="/register">Register</a></div>
+    </div>
+  </div>
+</body></html>

@@ -1,0 +1,139 @@
+<% var bodyHtml = `
+<div class="row mb-4">
+  <div class="col-md-12">
+    <h2 class="mb-3">Request Food</h2>
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <form method="POST" action="/receiver/request">
+          <div class="row">
+            <div class="col-md-3">
+              <label class="form-label">Food Item</label>
+              <input type="text" name="food_item" class="form-control" placeholder="e.g., Rice, Bread" required>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Quantity (kg/units)</label>
+              <input type="number" name="quantity" class="form-control" min="1" required>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Urgency</label>
+              <select name="urgency" class="form-select">
+                <option value="Low">Low</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="High">High</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Notes (Optional)</label>
+              <input type="text" name="notes" class="form-control" placeholder="Additional details">
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+              <button type="submit" class="btn btn-primary w-100">Submit Request</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mb-4">
+  <div class="col-md-12">
+    <h2 class="mb-3">My Food Requests</h2>
+    <div class="card shadow-sm">
+      <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Request Date</th>
+              <th>Food Item</th>
+              <th>Quantity (kg/units)</th>
+              <th>Urgency</th>
+              <th>Status</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            `; 
+            if (requests && requests.length > 0) {
+              requests.forEach(r => { 
+                const reqDate = (r.request_date instanceof Date ? r.request_date : new Date(r.request_date)).toISOString().substring(0,10);
+                let statusBadge = 'secondary';
+                if (r.status === 'Approved') statusBadge = 'success';
+                else if (r.status === 'Fulfilled') statusBadge = 'info';
+                else if (r.status === 'Rejected') statusBadge = 'danger';
+                else if (r.status === 'Pending') statusBadge = 'warning';
+                
+                let urgencyBadge = 'info';
+                if (r.urgency === 'High') urgencyBadge = 'danger';
+                else if (r.urgency === 'Medium') urgencyBadge = 'warning';
+                
+                bodyHtml += `
+                <tr>
+                  <td>${reqDate}</td>
+                  <td>${r.food_item}</td>
+                  <td>${r.quantity}</td>
+                  <td><span class="badge bg-${urgencyBadge}">${r.urgency}</span></td>
+                  <td><span class="badge bg-${statusBadge}">${r.status}</span></td>
+                  <td>${r.notes || '-'}</td>
+                </tr>
+                `; 
+              });
+            } else {
+              bodyHtml += `
+              <tr>
+                <td colspan="6" class="text-center text-muted py-4">No requests yet. Submit a request above to get started.</td>
+              </tr>
+              `;
+            }
+            bodyHtml += `
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <h2 class="mb-3">Available Food at Centers</h2>
+    <div class="card shadow-sm">
+      <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Item</th>
+              <th>Qty (kg/units)</th>
+              <th>Expiry</th>
+              <th>Center</th>
+            </tr>
+          </thead>
+          <tbody>
+            `; 
+            if (available && available.length > 0) {
+              available.forEach(a => { 
+                const expiryDate = (a.expiry_date instanceof Date ? a.expiry_date : new Date(a.expiry_date)).toISOString().substring(0,10); 
+                bodyHtml += `
+                <tr>
+                  <td>${a.food_item}</td>
+                  <td>${a.quantity}</td>
+                  <td>${expiryDate}</td>
+                  <td>${a.center_name}</td>
+                </tr>
+                `; 
+              });
+            } else {
+              bodyHtml += `
+              <tr>
+                <td colspan="4" class="text-center text-muted py-4">No food available at centers currently.</td>
+              </tr>
+              `;
+            }
+            bodyHtml += `
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`; %> <%- include('../layout', { title: 'Receiver Dashboard', body: bodyHtml })
+%>

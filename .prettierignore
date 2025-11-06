@@ -1,0 +1,3 @@
+# Ignore EJS files to prevent formatter from breaking syntax
+src/views/**/*.ejs
+*.ejs

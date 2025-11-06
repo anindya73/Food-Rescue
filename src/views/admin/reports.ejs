@@ -1,0 +1,52 @@
+<% var bodyHtml = `
+<div class="row">
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-header fw-semibold bg-white">Expiring Soon</div>
+      <div class="card-body p-0">
+        <table class="table mb-0">
+          <thead>
+            <tr>
+              <th>Food Item</th>
+              <th>Qty (kg/units)</th>
+              <th>Expiry</th>
+            </tr>
+          </thead>
+          <tbody>
+            `; expiring.filter(r => r.quantity > 0).forEach(r => { bodyHtml += `
+            <tr>
+              <td>${r.food_item}</td>
+              <td>${r.quantity}</td>
+              <td>${r.expiry_date.toISOString().substring(0,10)}</td>
+            </tr>
+            `; }); bodyHtml += `
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-header fw-semibold bg-white">Receivers Served</div>
+      <div class="card-body p-0">
+        <table class="table mb-0">
+          <thead>
+            <tr>
+              <th>Receiver</th>
+              <th>Donations Received</th>
+            </tr>
+          </thead>
+          <tbody>
+            `; served.forEach(r => { bodyHtml += `
+            <tr>
+              <td>${r.name}</td>
+              <td>${r.total}</td>
+            </tr>
+            `; }); bodyHtml += `
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`; %> <%- include('../layout', { title: 'Reports', body: bodyHtml }) %>

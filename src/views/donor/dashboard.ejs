@@ -1,0 +1,46 @@
+<%
+var bodyHtml = `
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3 class="mb-0">Your Donations</h3>
+  <a class="btn btn-success" href="/donor/donate"><i class="bi bi-plus-circle"></i> New Donation</a>
+</div>
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Item</th>
+          <th>Qty (kg/units)</th>
+          <th>Expiry</th>
+          <th>Status</th>
+          <th>Verify</th>
+        </tr>
+      </thead>
+      <tbody>
+`;
+donations.forEach(d => {
+  const expiryDate = (d.expiry_date instanceof Date ? d.expiry_date : new Date(d.expiry_date)).toISOString().substring(0,10);
+  const statusClass = d.status==='Delivered'?'bg-success':(d.status==='Pending'?'bg-warning text-dark':'bg-secondary');
+  const originalQty = d.original_quantity || d.quantity;
+  const displayQty = `${d.quantity}/${originalQty}`;
+  bodyHtml += `
+        <tr>
+          <td>${d.food_item}</td>
+          <td>${displayQty}</td>
+          <td>${expiryDate}</td>
+          <td><span class="badge ${statusClass}">${d.status}</span></td>
+          <td>
+            <a class="btn btn-sm btn-outline-success" href="/verify/${d.id}">Open</a>
+            <a class="btn btn-sm btn-success" href="/pdf/${d.id}" target="_blank">PDF</a>
+          </td>
+        </tr>
+  `;
+});
+bodyHtml += `
+      </tbody>
+    </table>
+  </div>
+</div>
+`;
+%>
+<%- include('../layout', { title: 'Donor Dashboard', body: bodyHtml }) %>

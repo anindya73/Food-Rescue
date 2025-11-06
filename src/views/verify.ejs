@@ -1,0 +1,39 @@
+<% var bodyHtml = `
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h4 class="text-success mb-3">Verify Donation</h4>
+        <dl class="row">
+          <dt class="col-sm-3">Donation ID</dt>
+          <dd class="col-sm-9">#${don.id}</dd>
+          <dt class="col-sm-3">Donor</dt>
+          <dd class="col-sm-9">${don.donor_name}</dd>
+          <dt class="col-sm-3">Item</dt>
+          <dd class="col-sm-9">${don.food_item}</dd>
+          <dt class="col-sm-3">Quantity (kg/units)</dt>
+          <dd class="col-sm-9">${don.original_quantity || don.quantity} kg</dd>
+          <dt class="col-sm-3">Center</dt>
+          <dd class="col-sm-9">${don.center_name}</dd>
+          <dt class="col-sm-3">Expiry</dt>
+          <dd class="col-sm-9">
+            ${new Date(don.expiry_date).toISOString().substring(0,10)}
+          </dd>
+          <dt class="col-sm-3">Status</dt>
+          <dd class="col-sm-9">
+            <span
+              class="badge ${don.status==='Delivered'?'bg-success':'bg-warning text-dark'}"
+              >${don.status}</span
+            >
+          </dd>
+        </dl>
+        <div class="d-flex gap-2">
+          <a class="btn btn-success" href="/pdf/${don.id}" target="_blank"
+            ><i class="bi bi-filetype-pdf"></i> Download PDF</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`; %> <%- include('layout', { title: 'Verify Donation', body: bodyHtml }) %>
