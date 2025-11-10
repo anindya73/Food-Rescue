@@ -56,7 +56,8 @@
             `; 
             if (requests && requests.length > 0) {
               requests.forEach(r => { 
-                const reqDate = (r.request_date instanceof Date ? r.request_date : new Date(r.request_date)).toISOString().substring(0,10);
+                const reqDate = (r.request_date instanceof Date ? r.request_date : new Date(r.request_date));
+                const reqDateStr = `${reqDate.getFullYear()}-${String(reqDate.getMonth()+1).padStart(2,'0')}-${String(reqDate.getDate()).padStart(2,'0')}`;
                 let statusBadge = 'secondary';
                 if (r.status === 'Approved') statusBadge = 'success';
                 else if (r.status === 'Fulfilled') statusBadge = 'info';
@@ -69,7 +70,7 @@
                 
                 bodyHtml += `
                 <tr>
-                  <td>${reqDate}</td>
+                  <td>${reqDateStr}</td>
                   <td>${r.food_item}</td>
                   <td>${r.quantity}</td>
                   <td><span class="badge bg-${urgencyBadge}">${r.urgency}</span></td>
@@ -111,7 +112,8 @@
             `; 
             if (available && available.length > 0) {
               available.forEach(a => { 
-                const expiryDate = (a.expiry_date instanceof Date ? a.expiry_date : new Date(a.expiry_date)).toISOString().substring(0,10); 
+                const _a = (a.expiry_date instanceof Date ? a.expiry_date : new Date(a.expiry_date));
+                const expiryDate = `${_a.getFullYear()}-${String(_a.getMonth()+1).padStart(2,'0')}-${String(_a.getDate()).padStart(2,'0')}`; 
                 bodyHtml += `
                 <tr>
                   <td>${a.food_item}</td>

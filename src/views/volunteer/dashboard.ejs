@@ -13,16 +13,24 @@
         </tr>
       </thead>
       <tbody>
-        `; pickups.forEach(p => { const pickupDateStr = p.pickup_date ?
-        (p.pickup_date instanceof Date ? p.pickup_date : new
-        Date(p.pickup_date)).toISOString().substring(0,10) : '-'; const
-        statusBadge = p.delivered ? 'bg-success' : 'bg-warning text-dark'; const
-        statusText = p.delivered ? 'Delivered' : 'Pending'; const actionBtn =
-        !p.delivered ? `
+`;
+pickups.forEach(p => {
+  const pickupDateStr = p.pickup_date
+    ? (() => {
+        const _p = p.pickup_date instanceof Date ? p.pickup_date : new Date(p.pickup_date);
+        return `${_p.getFullYear()}-${String(_p.getMonth() + 1).padStart(2, '0')}-${String(_p.getDate()).padStart(2, '0')}`;
+      })()
+    : '-';
+  const statusBadge = p.delivered ? 'bg-success' : 'bg-warning text-dark';
+  const statusText = p.delivered ? 'Delivered' : 'Pending';
+  const actionBtn = !p.delivered
+    ? `
         <form method="POST" action="/volunteer/deliver/${p.id}">
           <button class="btn btn-sm btn-success">Mark Delivered</button>
         </form>
-        ` : ''; bodyHtml += `
+        `
+    : '';
+  bodyHtml += `
         <tr>
           <td>${p.food_item}</td>
           <td>${p.quantity}</td>
@@ -31,10 +39,13 @@
           <td><span class="badge ${statusBadge}">${statusText}</span></td>
           <td>${actionBtn}</td>
         </tr>
-        `; }); bodyHtml += `
+  `;
+});
+bodyHtml += `
       </tbody>
     </table>
   </div>
 </div>
-`; %> <%- include('../layout', { title: 'Volunteer Dashboard', body: bodyHtml })
+`;
 %>
+<%- include('../layout', { title: 'Volunteer Dashboard', body: bodyHtml }) %>

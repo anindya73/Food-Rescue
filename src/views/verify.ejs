@@ -17,7 +17,7 @@
           <dd class="col-sm-9">${don.center_name}</dd>
           <dt class="col-sm-3">Expiry</dt>
           <dd class="col-sm-9">
-            ${new Date(don.expiry_date).toISOString().substring(0,10)}
+            ${(() => { const _donExp = (don.expiry_date instanceof Date ? don.expiry_date : new Date(don.expiry_date)); return `${_donExp.getFullYear()}-${String(_donExp.getMonth()+1).padStart(2,'0')}-${String(_donExp.getDate()).padStart(2,'0')}` })()}
           </dd>
           <dt class="col-sm-3">Status</dt>
           <dd class="col-sm-9">

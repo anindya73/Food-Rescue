@@ -128,14 +128,15 @@ if (!foodRequests || foodRequests.length === 0) {
   `;
   
   foodRequests.forEach(req => {
-    const reqDate = (req.request_date instanceof Date ? req.request_date : new Date(req.request_date)).toISOString().substring(0,10);
+  const reqDate = (req.request_date instanceof Date ? req.request_date : new Date(req.request_date));
+  const reqDateStr = `${reqDate.getFullYear()}-${String(reqDate.getMonth()+1).padStart(2,'0')}-${String(reqDate.getDate()).padStart(2,'0')}`;
     let urgencyBadge = 'info';
     if (req.urgency === 'High') urgencyBadge = 'danger';
     else if (req.urgency === 'Medium') urgencyBadge = 'warning';
     
     bodyHtml += `
           <tr>
-            <td>${reqDate}</td>
+            <td>${reqDateStr}</td>
             <td>${req.receiver_name}</td>
             <td><strong>${req.food_item}</strong></td>
             <td>${req.quantity} kg</td>
@@ -287,7 +288,8 @@ if (!availableFood || availableFood.length === 0) {
   `;
   
   availableFood.forEach(item => {
-    const expiryDate = (item.expiry_date instanceof Date ? item.expiry_date : new Date(item.expiry_date)).toISOString().substring(0,10);
+  const _itemExp = (item.expiry_date instanceof Date ? item.expiry_date : new Date(item.expiry_date));
+  const expiryDate = `${_itemExp.getFullYear()}-${String(_itemExp.getMonth()+1).padStart(2,'0')}-${String(_itemExp.getDate()).padStart(2,'0')}`;
     bodyHtml += `
           <tr>
             <td><strong>${item.food_item}</strong></td>

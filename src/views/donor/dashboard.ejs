@@ -19,7 +19,8 @@ var bodyHtml = `
       <tbody>
 `;
 donations.forEach(d => {
-  const expiryDate = (d.expiry_date instanceof Date ? d.expiry_date : new Date(d.expiry_date)).toISOString().substring(0,10);
+  const _d = (d.expiry_date instanceof Date ? d.expiry_date : new Date(d.expiry_date));
+  const expiryDate = `${_d.getFullYear()}-${String(_d.getMonth()+1).padStart(2,'0')}-${String(_d.getDate()).padStart(2,'0')}`;
   const statusClass = d.status==='Delivered'?'bg-success':(d.status==='Pending'?'bg-warning text-dark':'bg-secondary');
   const originalQty = d.original_quantity || d.quantity;
   const displayQty = `${d.quantity}/${originalQty}`;

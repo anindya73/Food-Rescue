@@ -13,13 +13,16 @@
             </tr>
           </thead>
           <tbody>
-            `; expiring.filter(r => r.quantity > 0).forEach(r => { bodyHtml += `
+            `; expiring.filter(r => r.quantity > 0).forEach(r => { 
+              const _r = (r.expiry_date instanceof Date ? r.expiry_date : new Date(r.expiry_date));
+              bodyHtml += `
             <tr>
               <td>${r.food_item}</td>
               <td>${r.quantity}</td>
-              <td>${r.expiry_date.toISOString().substring(0,10)}</td>
+              <td>${_r.getFullYear()}-${String(_r.getMonth()+1).padStart(2,'0')}-${String(_r.getDate()).padStart(2,'0')}</td>
             </tr>
-            `; }); bodyHtml += `
+            `; 
+            }); bodyHtml += `
           </tbody>
         </table>
       </div>
