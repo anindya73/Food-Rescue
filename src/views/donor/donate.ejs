@@ -1,0 +1,45 @@
+<% var bodyHtml = `
+<div class="row justify-content-center">
+  <div class="col-lg-6">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h3 class="mb-3 text-success">Log Donation</h3>
+        <form method="POST">
+          <div class="mb-3">
+            <label class="form-label">Food Item</label>
+            <input class="form-control" name="food_item" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Quantity (kg/units)</label>
+            <input
+              type="number"
+              class="form-control"
+              name="quantity"
+              required
+              min="1"
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Expiry Date</label>
+            <input
+              type="date"
+              class="form-control"
+              name="expiry_date"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Center</label>
+            <select class="form-select" name="center_id" required>
+              `; centers.forEach(c => { bodyHtml += `
+              <option value="${c.id}">${c.name}</option>
+              `; }); bodyHtml += `
+            </select>
+          </div>
+          <button class="btn btn-success w-100">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+`; %> <%- include('../layout', { title: 'Add Donation', body: bodyHtml }) %>

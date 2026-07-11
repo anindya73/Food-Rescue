@@ -1,0 +1,61 @@
+<% var bodyHtml = ``;
+if (!centers || centers.length === 0) { bodyHtml += `
+<div class="alert alert-info">
+  No centers configured yet. Use the form below to add your first center.
+</div>
+`; }
+bodyHtml += `
+<div class="row g-4">
+  <div class="col-lg-5">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h5 class="text-success mb-3">Add Center</h5>
+        <form method="POST" action="/admin/centers">
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input class="form-control" name="name" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Location</label>
+            <input class="form-control" name="location" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Capacity</label>
+            <input class="form-control" type="number" name="capacity" min="0" value="0" />
+          </div>
+          <button class="btn btn-success">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-7">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h5 class="text-success mb-3">Centers</h5>`;
+if (centers && centers.length) {
+  bodyHtml += `
+        <div class="table-responsive">
+          <table class="table table-sm align-middle">
+            <thead><tr><th>ID</th><th>Name</th><th>Location</th><th>Capacity</th></tr></thead>
+            <tbody>`;
+  centers.forEach(c => { bodyHtml += `
+              <tr>
+                <td>${c.id}</td>
+                <td>${c.name}</td>
+                <td>${c.location}</td>
+                <td>${c.capacity}</td>
+              </tr>`; });
+  bodyHtml += `
+            </tbody>
+          </table>
+        </div>`;
+} else {
+  bodyHtml += `
+        <div class="text-muted small">No centers yet.</div>`;
+}
+bodyHtml += `
+      </div>
+    </div>
+  </div>
+</div>`; %>
+<%- include('../layout', { title: 'Manage Centers', body: bodyHtml }) %>

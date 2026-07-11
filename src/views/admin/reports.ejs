@@ -1,0 +1,55 @@
+<% var bodyHtml = `
+<div class="row">
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-header fw-semibold bg-white">Expiring Soon</div>
+      <div class="card-body p-0">
+        <table class="table mb-0">
+          <thead>
+            <tr>
+              <th>Food Item</th>
+              <th>Qty (kg/units)</th>
+              <th>Expiry</th>
+            </tr>
+          </thead>
+          <tbody>
+            `; expiring.filter(r => r.quantity > 0).forEach(r => { 
+              const _r = (r.expiry_date instanceof Date ? r.expiry_date : new Date(r.expiry_date));
+              bodyHtml += `
+            <tr>
+              <td>${r.food_item}</td>
+              <td>${r.quantity}</td>
+              <td>${_r.getFullYear()}-${String(_r.getMonth()+1).padStart(2,'0')}-${String(_r.getDate()).padStart(2,'0')}</td>
+            </tr>
+            `; 
+            }); bodyHtml += `
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-header fw-semibold bg-white">Receivers Served</div>
+      <div class="card-body p-0">
+        <table class="table mb-0">
+          <thead>
+            <tr>
+              <th>Receiver</th>
+              <th>Donations Received</th>
+            </tr>
+          </thead>
+          <tbody>
+            `; served.forEach(r => { bodyHtml += `
+            <tr>
+              <td>${r.name}</td>
+              <td>${r.total}</td>
+            </tr>
+            `; }); bodyHtml += `
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`; %> <%- include('../layout', { title: 'Reports', body: bodyHtml }) %>

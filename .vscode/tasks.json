@@ -1,0 +1,30 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "verify-db-counts",
+			"type": "shell",
+			"command": "node - <<'NODE'\nrequire('dotenv').config();\n(async()=>{\n  const mysql = require('mysql2/promise');\n  const conn = await mysql.createConnection({\n    host: process.env.DB_HOST||'localhost',\n    user: process.env.DB_USER||'root',\n    password: (process.env.DB_PASSWORD||'').trim(),\n    database: (process.env.DB_NAME||'FoodRescue').trim(),\n    port: Number((process.env.DB_PORT||'3306').trim())\n  });\n  const tables=['users','donations','pickups','distributions','food_requests','donors','volunteers','receivers','centers'];\n  for (const t of tables) {\n    const [r] = await conn.query(`SELECT COUNT(*) AS c FROM \\`${t}\\``);\n    console.log(t, r[0].c);\n  }\n  await conn.end();\n})();\nNODE",
+			"problemMatcher": [
+				"$tsc"
+			],
+			"group": "test"
+		},
+		{
+			"label": "serve-app",
+			"type": "shell",
+			"command": "npm run start",
+			"args": [],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "serve-app",
+			"type": "shell",
+			"command": "npm run start",
+			"isBackground": true,
+			"group": "build"
+		}
+	]
+}
